@@ -69,7 +69,7 @@ const LandingPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
-                Co-SDR empowers your sales development team with AI-driven insights, automation, and personalized coaching. Elevate your outreach, boost productivity, and close more deals – together.
+                Co-SDR empowers your sales development team with AI-driven insights, automation, and personalized pitch. Elevate your outreach, boost productivity, and close more deals – together.
               </motion.p>
               <motion.button
                 className="bg-blue-600 text-white px-8 py-3 rounded-full font-semibold text-lg hover:bg-blue-700 transition duration-300"

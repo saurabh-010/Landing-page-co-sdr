@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Brain, Zap, Target, RefreshCw, MessageCircle, Users, Rocket, ChartBar, Clock, Shield } from 'lucide-react';
+import { Brain, Zap, Target, RefreshCw, MessageCircle, Users, Rocket, ChartBar, Clock, Menu, X } from 'lucide-react';
 
 const AIPattern = () => (
   <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
@@ -22,11 +22,18 @@ const AIPattern = () => (
 const LandingPage = () => {
   const [email, setEmail] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const waitlistRef = useRef(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsSubmitted(true);
     setTimeout(() => setIsSubmitted(false), 3000);
+  };
+
+  const scrollToWaitlist = () => {
+    waitlistRef.current?.scrollIntoView({ behavior: 'smooth' });
+    setIsMenuOpen(false);
   };
 
   return (
@@ -35,19 +42,38 @@ const LandingPage = () => {
       <header className="fixed top-0 left-0 right-0 bg-white shadow-sm z-50">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold text-blue-600">Co-SDR</h1>
-          <nav>
+          <nav className="hidden md:block">
             <ul className="flex space-x-6">
               <li><a href="#features" className="text-gray-600 hover:text-blue-600">Features</a></li>
               <li><a href="#how-it-works" className="text-gray-600 hover:text-blue-600">How It Works</a></li>
               <li><a href="#testimonials" className="text-gray-600 hover:text-blue-600">Testimonials</a></li>
               <li><motion.button 
+                onClick={scrollToWaitlist}
                 className="bg-blue-600 text-white px-4 py-2 rounded-full font-semibold"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >Join Waitlist</motion.button></li>
             </ul>
           </nav>
+          <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
+        {isMenuOpen && (
+          <div className="md:hidden bg-white py-4">
+            <ul className="flex flex-col items-center space-y-4">
+              <li><a href="#features" className="text-gray-600 hover:text-blue-600" onClick={() => setIsMenuOpen(false)}>Features</a></li>
+              <li><a href="#how-it-works" className="text-gray-600 hover:text-blue-600" onClick={() => setIsMenuOpen(false)}>How It Works</a></li>
+              <li><a href="#testimonials" className="text-gray-600 hover:text-blue-600" onClick={() => setIsMenuOpen(false)}>Testimonials</a></li>
+              <li><motion.button 
+                onClick={scrollToWaitlist}
+                className="bg-blue-600 text-white px-4 py-2 rounded-full font-semibold"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >Join Waitlist</motion.button></li>
+            </ul>
+          </div>
+        )}
       </header>
 
       {/* Hero Section */}
@@ -56,7 +82,7 @@ const LandingPage = () => {
           <div className="flex flex-col md:flex-row items-center">
             <div className="md:w-1/2 mb-10 md:mb-0">
               <motion.h2 
-                className="text-5xl font-bold mb-6 text-gray-900"
+                className="text-4xl md:text-5xl font-bold mb-6 text-gray-900"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
@@ -64,14 +90,15 @@ const LandingPage = () => {
                 Meet Your AI Co-pilot for B2B Sales
               </motion.h2>
               <motion.p 
-                className="text-xl mb-8 text-gray-600"
+                className="text-lg md:text-xl mb-8 text-gray-600"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
-                Co-SDR empowers your sales development team with AI-driven insights, automation, and personalized pitch. Elevate your outreach, boost productivity, and close more deals – together.
+                Co-SDR empowers your sales development team with AI-driven insights, automation, and personalized coaching. Elevate your outreach, boost productivity, and close more deals – together.
               </motion.p>
               <motion.button
+                onClick={scrollToWaitlist}
                 className="bg-blue-600 text-white px-8 py-3 rounded-full font-semibold text-lg hover:bg-blue-700 transition duration-300"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -173,23 +200,23 @@ const LandingPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-blue-600 text-white">
+      <section ref={waitlistRef} className="py-20 bg-blue-600 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-4xl font-bold mb-8">Ready to Supercharge Your SDR Team?</h2>
           <p className="text-xl mb-10">Join our waitlist and be among the first to experience the future of B2B sales development.</p>
           <form onSubmit={handleSubmit} className="max-w-md mx-auto">
-            <div className="flex items-center bg-white rounded-full p-1">
+            <div className="flex flex-col sm:flex-row items-center bg-white rounded-full p-1">
               <input
                 type="email"
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="flex-grow px-4 py-2 rounded-full text-gray-800 focus:outline-none"
+                className="w-full sm:flex-grow px-4 py-2 rounded-full text-gray-800 focus:outline-none mb-2 sm:mb-0"
                 required
               />
               <motion.button
                 type="submit"
-                className="bg-blue-800 text-white px-6 py-2 rounded-full font-semibold"
+                className="w-full sm:w-auto bg-blue-800 text-white px-6 py-2 rounded-full font-semibold"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >

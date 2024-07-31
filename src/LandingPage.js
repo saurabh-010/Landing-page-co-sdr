@@ -204,19 +204,19 @@ const LandingPage = () => {
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-4xl font-bold mb-8">Ready to Supercharge Your SDR Team?</h2>
           <p className="text-xl mb-10">Join our waitlist and be among the first to experience the future of B2B sales development.</p>
-          <form onSubmit={handleSubmit} className="max-w-md mx-auto">
-            <div className="flex flex-col sm:flex-row items-center bg-white rounded-full p-1">
+          <form onSubmit={handleSubmit} className="max-w-md mx-auto px-4 sm:px-0">
+           <div className="flex flex-col sm:flex-row items-stretch bg-white rounded-full p-1 overflow-hidden">
               <input
                 type="email"
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full sm:flex-grow px-4 py-2 rounded-full text-gray-800 focus:outline-none mb-2 sm:mb-0"
+                className="w-full px-4 py-3 text-gray-800 focus:outline-none"
                 required
               />
               <motion.button
                 type="submit"
-                className="w-full sm:w-auto bg-blue-800 text-white px-6 py-2 rounded-full font-semibold"
+                className="w-full sm:w-auto bg-blue-800 text-white px-6 py-3 font-semibold sm:rounded-full"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >

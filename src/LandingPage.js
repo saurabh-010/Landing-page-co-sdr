@@ -1,6 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Brain, Zap, Target, RefreshCw, MessageCircle, Users, Rocket, ChartBar, Clock, Menu, X } from 'lucide-react';
+import axios from 'axios';
+
+
 
 const AIPattern = () => (
   <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
@@ -24,12 +27,33 @@ const LandingPage = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const waitlistRef = useRef(null);
+  const apiEndpoint = 'https://sheet.best/api/sheets/8b2ab3a3-90dc-4dbe-9915-a73bfc97ab8fx';
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitted(true);
-    setTimeout(() => setIsSubmitted(false), 3000);
+    try {
+      // Remove the last character before making the API call
+      const actualEndpoint = apiEndpoint.slice(0, -1);
+     const response = await axios.post(actualEndpoint, {
+       WaitlistEmail: email
+     });
+     
+     if (response.status === 200) {
+        setEmail('');
+        setIsSubmitted(true);
+        setTimeout(() => setIsSubmitted(false), 3000);
+     } else {
+       throw new Error('Unexpected response status');
+     }
+    } catch (error) {
+      console.error('Error submitting email:', error);
+      alert('There was an error submitting your email. Please try again.');
+    }
   };
+
+
+
+  
 
   const scrollToWaitlist = () => {
     waitlistRef.current?.scrollIntoView({ behavior: 'smooth' });
